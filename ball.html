@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Tan Qiu</title>
+    <style>* { padding: 0; margin: 0; } canvas { background: #eee; display: block; margin: 0 auto; }</style>
+</head>
+<body>
+
+<canvas id="myCanvas" width="1000" height="1000"></canvas>
+
+<script>
+    var WIDTH = 400;
+    var HEIGHT = 400;
+    class Ball {
+        constructor(x,y,r,vx,vy,color){
+            this.x = x;
+            this.y = y;
+            this.r = r;
+            this.vx = vx;
+            this.vy = vy;
+            this.color = color;
+        }
+
+        move(t){
+            let dx = this.x + (this.vx * t);
+            let dy = this.y + (this.vy * t);
+
+            if(dx > WIDTH-this.r || dx < this.r) {
+                this.vx = -this.vx;
+            }
+            if(dy > HEIGHT-this.r || dy < this.r) {
+                this.vy = -this.vy;
+            }
+
+            this.x = this.x + (this.vx * t);
+            this.y = this.y + (this.vy * t);
+            //console.log('this.x',this.x);
+            //console.log('this.y',this.y);
+        } 
+    }
+
+    function initBalls(N) {
+        var balls = [];
+        var colors = ["#0095DD","#c71585","#2f4f4f","#191970","#800080","#99CCFF",
+                        "#FF3399","#CC3399","#993399","#663399","#333399","#003399",
+                        "#FF3366","#CC3366","#993366","#663366","#333366","#003366",
+                        "#FF3333","#CC3333","#993333","#663333","#333333","#003333",
+                        "#FF3300","#CC3300","#993300","#663300","#333300","#003300",
+                        "#FF00FF","#CC00FF","#9900FF","#6600FF","#3300FF","#0000FF",
+                        "#FF00CC","#CC00CC","#9900CC","#6600CC","#3300CC","#0000CC",
+                        "#FF0099","#CC0099","#990099","#660099","#330099","#000099",
+                        "#FF0066","#CC0066","#990066","#660066","#330066","#000066",
+                        "#FF0033","#CC0033","#990033","#660033","#330033","#000033"]
+        var firstball = new Ball(WIDTH/2,HEIGHT/2,3,0.1,0.1,"#0095DD");
+
+        for (let i = 0; i < N; i++){
+            let x = firstball.x;
+            let y = firstball.y;
+            let r = firstball.r + Math.random() * 1;
+            let vx = firstball.vx + (Math.random() - 0.5) * 5;
+            let vy = firstball.vy + (Math.random() - 0.5) * 15;
+            let color = colors[i%colors.length];
+
+            var ball = new Ball(x,y,r,vx,vy,color);
+            balls.push(ball)
+        }
+        //balls.push(firstball);
+        return balls;
+    }
+    var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d");
+    var balls = initBalls(150);
+
+    function drawBalls() {
+        balls.forEach((ball) => {
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2);
+            ctx.fillStyle = ball.color;
+            ctx.fill();
+            ctx.closePath();
+        });
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBalls(balls);
+
+        balls.forEach((ball)=>{
+            ball.move(1);
+        });
+
+    }
+
+    setInterval(draw, 10);
+</script>
+</body>
+</html>

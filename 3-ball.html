@@ -1,0 +1,43 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>wanhua</title>
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.0.min.js"></script>
+	<script src="ball.js"></script>
+	<style type="text/css">
+		html{
+			background: white;
+		}
+		canvas{
+			border-style:0;
+			margin-left:10px;
+			background: white;
+		}
+	</style>
+	</head>
+	<body>
+		<button id="draw">draw</button>
+		<button id="stop">stop</button>
+		<button id="save">save</button>
+		<button id="clear">clear</button>
+		<button id="ani">ani</button>
+		<button id="record">record</button>
+		<button id="stopRec">stopRec</button>
+        <!-- 添加输入框 175,5830,2030-->
+        <input type="text" id="rotateX" value="185">
+        <input type="text" id="rotateY" value="150">
+        <input type="text" id="rotateZ" value="2030">
+        <br/>
+		
+		<div id="data">
+			<span id="r1"></span></br>
+			<span id="r2"></span>
+			<span id="r3"></span>
+			<span id="r4"></span>
+		</div>
+		<div id="wrapper">
+			<canvas id="canvassample" width="2200" height="800" style="border: 1px solid black"></canvas>
+			<p><a href="javascript:window.close()">close</a></p>
+		</div>
+	</body>
+</html>

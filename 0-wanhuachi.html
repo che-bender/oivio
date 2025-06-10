@@ -1,0 +1,250 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>wanhua</title>
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.0.min.js"></script>
+	<style type="text/css">
+		html{
+			background: white;
+		}
+		canvas{
+			border-style:0;
+			margin-left:10px;
+			background: white;
+		}
+	</style>
+		<!--[if lte IE 9]> <script type="text/javascript" src="http://eyehere.net/wp-content/uploads/common/excanvas.js"></script><![endif]-->
+	</head>
+	<body>
+		<script type="text/javascript">
+
+			function clear_ctx(){
+				var can = $("#canvassample").get(0);
+				var ctx = can.getContext('2d');
+				ctx.clearRect(0,0,1500,1000);
+			};
+
+			var r_ani = 37;
+			var d_ani = 0;
+			var direct = 1;
+			var dr = 1;
+			var dd = 1;
+			function ani_wanhua(){
+				d_ani += dd;
+				r_ani += dr;
+
+				if ((d_ani>200)||(d_ani<-100)){
+					//dr = dd * -1;
+					d_ani =Math.floor(Math.random()*200);
+					//dd = 0;
+				}
+
+				if ((r_ani>200)||(r_ani<-100))				
+				{
+					dr = dr * -1;
+					//dd = dr * -1;
+					d_ani =Math.floor(Math.random()*200);
+					//dr = 0;
+				}
+				if ((dd==0)&&(dr==0))
+					dd = 1;
+
+				clear_ctx();
+
+				var rotate_times=50;
+				var ie = !-[1,];
+				if(ie){
+					rotate_times=30;
+				}
+				draw_circle(450,450,200,r_ani,d_ani,360*rotate_times);	
+				
+
+				if(draw_loop_flg){
+					setTimeout(ani_wanhua,50);
+				}
+			}
+			var draw_loop_flg = true;
+			function wrap_do_wanhua(){
+				do_wanhua();
+				if (draw_loop_flg){
+					//setTimeout(wrap_do_wanhua,200);
+				}
+			};
+			function do_wanhua(){
+				
+				/*  some [r,d] which can draw beautful.
+					[[149,67],
+					[120,52],
+					[102,63],
+					[133,56],
+					[132,37],
+					[40,17], wu jiao xing
+					[80,56],
+					[110,95],
+					[57,27],
+					[33,10],360*10
+					[111,101],
+					[60,45],
+					[131,86],
+					[123,117],
+					[150,98],
+					[153,37],
+					[124,90],
+					[91,84], 50
+					[150,14],
+					[],
+					[],
+					[],
+					[],
+					[],
+					]
+				*/
+				clear_ctx();
+				var r = Math.floor(Math.random()*180);
+				var d = Math.floor(Math.random()*r);
+				$("#r1").html("[1]r:"+r+",d:"+d);
+				draw_circle(250,250,200,r,d,360*1);
+				draw_circle(750,250,200,r,d,360*30);
+				draw_circle(1250,250,200,r,d,360*60);
+
+				r = Math.floor(Math.random()*180);
+				d = Math.floor(Math.random()*r);
+				$("#r2").html("[2]r:"+r+",d:"+d);
+				draw_circle(250,750,200,r,d,360*60);
+
+				r = Math.floor(Math.random()*180);
+				d = Math.floor(Math.random()*r);
+				$("#r3").html("[3]r:"+r+",d:"+d);
+				draw_circle(750,750,200,r,d,360*25);
+
+				r = Math.floor(Math.random()*180);
+				d = Math.floor(Math.random()*r);
+				$("#r4").html("[4]r:"+r+",d:"+d);
+				draw_circle(1250,750,200,r,d,360*10);
+			}
+
+				var red = Math.floor(Math.random()*255)
+				var g = Math.floor(Math.random()*255)
+				var b = Math.floor(Math.random()*255)
+			function inc_rgb()
+			{
+				if (red<255){
+					red += 10;
+				}
+				else if (g<255)
+				{
+					g += 10;
+				}
+				else if (b<255)
+				{
+					b += 10;
+				}
+				else
+				{
+					red=10;
+					g=10;
+					b=10;
+				}
+
+				return "rgb(" + red +","+ g +","+ b +")";
+			}
+			function draw_circle(x0,y0,R,r,d,angle){
+				var can = $("#canvassample").get(0);
+				var ctx = can.getContext('2d');
+				
+				ctx.strokeStyle = "green";
+				
+				/* code for change stroke color by random.
+				var red = Math.floor(Math.random()*255)
+				var g = Math.floor(Math.random()*255)
+				var b = Math.floor(Math.random()*255)
+				ctx.strokeStyle = "rgb(" + red +","+ g +","+ b +")";
+				*/
+				//ctx.strokeStyle = inc_rgb();
+
+				ctx.fillStyle="green";
+				ctx.fillStyle="orange";
+
+				ctx.beginPath();
+				for(var a=0;a<angle;a++)
+				{
+					var al = 2*Math.PI*a / 360;
+					draw_circle_alpha(x0,y0,R,r,d,al,ctx);
+				}
+				//ctx.closePath();
+				ctx.stroke();
+			};
+
+			function draw_circle_alpha(x0,y0,R,r,d,alpha,ctx){
+				var dr = R - (d*Math.sin(alpha*R/r)) - r;
+				var x1 = dr*Math.cos(alpha) + x0;
+				var y1 = dr*Math.sin(alpha) + y0;
+
+				if(alpha==0)
+				{
+					ctx.moveTo(x1,y1);
+				}else{
+					ctx.lineTo(x1,y1);
+				}
+				
+				return [x1,y1];
+			};
+
+		</script>
+		<script type="text/javascript">
+			$(function(){
+				$("#clear").click(function(){
+					clear_ctx();
+
+					$("#r1").html(draw_loop_flg);
+
+					return false;
+				});
+				$("#draw").click(function(){
+					wrap_do_wanhua();
+					return false;
+				});
+				
+				$("#save").click(function(){
+					var can = $("#canvassample");
+					var dataURL = can.get(0).toDataURL();
+					var img = $("<img></img>");
+					img.attr("src",dataURL);
+
+					can.replaceWith(img);
+					return false;
+				});
+
+				$("#to").html("start");
+				$("#ani").click(function(){
+					if ($("#to").html()=='start'){
+						draw_loop_flg=true;
+						$("#to").html("stop");
+						ani_wanhua();
+					} 
+					else
+					{
+						draw_loop_flg=false;
+						$("#to").html("start");
+					}
+				});
+			})
+		</script>
+
+		<button id="draw">draw</button>
+		<button id="save">save</button>
+		<button id="clear">clear</button>
+		<button id="ani">ani</button>
+		<div><p id="to">abc</p></div>
+		<div id="data">
+			<span id="r1"></span></br>
+			<span id="r2"></span>
+			<span id="r3"></span>
+			<span id="r4"></span>
+		</div>
+		<div id="wrapper">
+			<canvas id="canvassample" width="1500" height="1200" style="border: 1px solid black"></canvas>
+			<p><a href="javascript:window.close()">close</a></p>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,24 @@
+pip install -U ansify
+
+
+黑白
+ansify --columns 120 --no-color examples/ycy.jpg
+
+
+彩色
+ansify --columns 120 examples/ycy.jpg
+
+
+像素
+ansify --columns 120 --grayscale pixel examples/ycy.jpg
+
+
+自定义字符
+ansify --columns 120 --diy-grayscale "a" examples/ycy.jpg
+
+
+其他示例
+ansify --columns 80 --diy-grayscale " 谁咬我苹果" examples/apple.png
+
+
+ansify --columns 80 --grayscale emoji examples/apple.png
