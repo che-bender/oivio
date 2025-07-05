@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<title>倒计时秒数 - 7段LED大号字体</title>
+<style>
+  body {
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: monospace;
+  }
+  #countdown {
+    display: flex;
+    gap: 12px; /* 数字间距加大 */
+  }
+  .char {
+    position: relative;
+    width: 48px;  /* 宽度翻倍 */
+    height: 96px; /* 高度翻倍 */
+  }
+  .segment {
+    position: absolute;
+    background-color: #222;
+    border-radius: 4px; /* 圆角放大 */
+    transition: background-color 0.3s;
+  }
+  .on {
+    background-color: orange;
+    box-shadow: 0 0 16px orange; /* 发光放大 */
+  }
+  /* 各段尺寸按比例放大 */
+  .seg-a { top: 0; left: 8px; width: 32px; height: 8px; }
+  .seg-b { top: 8px; right: 0; width: 8px; height: 36px; }
+  .seg-c { bottom: 8px; right: 0; width: 8px; height: 36px; }
+  .seg-d { bottom: 0; left: 8px; width: 32px; height: 8px; }
+  .seg-e { bottom: 8px; left: 0; width: 8px; height: 36px; }
+  .seg-f { top: 8px; left: 0; width: 8px; height: 36px; }
+  .seg-g { top: 44px; left: 8px; width: 32px; height: 8px; }
+</style>
+</head>
+<body>
+
+<div id="countdown"></div>
+
+<script>
+  const targetTime = new Date('2051-01-01T00:00:00Z').getTime();
+
+  const countdown = document.getElementById('countdown');
+
+  const segmentMap = {
+    '0': ['a','b','c','d','e','f'],
+    '1': ['b','c'],
+    '2': ['a','b','g','e','d'],
+    '3': ['a','b','g','c','d'],
+    '4': ['f','g','b','c'],
+    '5': ['a','f','g','c','d'],
+    '6': ['a','f','g','e','d','c'],
+    '7': ['a','b','c'],
+    '8': ['a','b','c','d','e','f','g'],
+    '9': ['a','b','c','d','f','g'],
+    ' ': []
+  };
+
+  function createChar(char) {
+    const div = document.createElement('div');
+    div.className = 'char';
+    const onSegments = segmentMap[char] || [];
+
+    ['a','b','c','d','e','f','g'].forEach(seg => {
+      const segDiv = document.createElement('div');
+      segDiv.className = 'segment seg-' + seg;
+      if(onSegments.includes(seg)) {
+        segDiv.classList.add('on');
+      }
+      div.appendChild(segDiv);
+    });
+    return div;
+  }
+
+  function updateCountdown() {
+    const now = Date.now();
+    let diff = Math.floor((targetTime - now) / 1000);
+    if(diff < 0) diff = 0;
+
+    const str = diff.toString();
+
+    countdown.innerHTML = '';
+
+    for(let c of str) {
+      countdown.appendChild(createChar(c));
+    }
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
+
+</body>
+</html>
